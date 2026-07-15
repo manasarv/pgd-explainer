@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGD — every core concept, explained simply</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="title">
+      <h1>PGD — every core concept, explained simply</h1>
+      <p>EDB Postgres Distributed, from the ground up · supported versions 4 → 5 → 6</p>
+    </div>
+    <span class="badge" id="verBadge">Foundations</span>
+  </header>
+
+  <!-- search / filter across every section -->
+  <div class="searchbar">
+    <div class="si">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Search features & sections — e.g. commit scope, failover, sequences, bdr.node_slots…" autocomplete="off">
+      <button class="si-clear" title="Clear" onclick="clearSearch()">✕</button>
+    </div>
+    <span class="si-info" id="searchInfo"></span>
+    <span class="si-hint">Enter = jump to first match</span>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" id="toc"></nav>
+
+    <div class="stage">
+      <div class="scene-head">
+        <div class="left">
+          <span class="scene-tag tag-core" id="sceneTag">Core concept</span>
+          <span class="chap" id="chap">—</span>
+        </div>
+        <div class="scene-title" id="sceneTitle">—</div>
+      </div>
+      <div class="scene-body">
+        <div class="canvas" id="canvas"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="controls">
+        <button class="btn" id="prevBtn" onclick="prevStep()">‹ Back</button>
+        <button class="btn primary" id="playBtn" onclick="togglePlay()">▶ Play</button>
+        <button class="btn" id="nextBtn" onclick="nextStep()">Next ›</button>
+        <span class="stepcount" id="stepcount">1 / 1</span>
+        <div class="beat-dots" id="beatDots"></div>
+        <button class="btn" id="autoBtn" onclick="toggleContinuous()" title="Auto-advance all scenes">▶▶ Auto</button>
+        <button class="btn" id="fsBtn" onclick="toggleFullscreen()" title="Fullscreen canvas">⤢</button>
+        <div class="spacer"></div>
+        <select id="speedSelect" class="speed-select" title="Voiceover speed">
+          <option value="0.8">0.8×</option>
+          <option value="0.97" selected>1×</option>
+          <option value="1.3">1.3×</option>
+        </select>
+        <select id="voiceSelect" class="voice-select" title="Choose voice" onchange="onVoicePick()"></select>
+        <div class="toggle" onclick="toggleVoice()">
+          <span class="switch on" id="voiceSwitch"><i></i></span>
+          <span id="voiceLabel">Voiceover on</span>
+        </div>
+      </div>
+      <!-- collapsible action bar + panels -->
+      <div class="action-bar" id="actionBar"></div>
+      <div class="collapsible-panels">
+        <!-- Transcript -->
+        <div class="cpanel" id="transcriptPanel">
+          <div class="analogy">
+            <div class="k">Imagine this…</div>
+            <div class="v" id="analogy">—</div>
+          </div>
+          <div class="real"><span class="k">In real terms</span><span id="real">—</span></div>
+          <div class="handsOn" id="handsOn" style="display:none"></div>
+          <div class="caption"><div class="narr" id="narr" aria-live="polite">—</div></div>
+        </div>
+        <!-- Views -->
+        <div class="cpanel" id="bdrPanel">
+          <div class="bdr-views" id="bdrViews"></div>
+          <div class="bdr-hint">Click a view for its documented columns &amp; definition (EDB v6 catalog reference). Grey dot = name not in the harvested reference set.</div>
+        </div>
+        <!-- Monitor -->
+        <div class="cpanel" id="monPanel">
+          <div class="mon-head">📈 Monitor it — query &amp; how to read it</div>
+          <div class="mon-rows" id="monRows"></div>
+        </div>
+        <!-- CLI -->
+        <div class="cpanel" id="cliPanel">
+          <div class="cli-head">⌨️ PGD CLI &amp; commands</div>
+          <div class="cli-rows" id="cliRows"></div>
+        </div>
+        <!-- Settings -->
+        <div class="cpanel" id="setPanel">
+          <div class="set-head">⚙️ Relevant settings (GUCs)</div>
+          <div class="set-rows" id="setRows"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p id="searchNone">No section matches your search.</p>
+
+  <footer class="tip">
+    Turn on speakers for the voiceover (press <span class="pill">Play</span> or <span class="pill">Next</span> once to allow audio).
+    Use the <span class="pill">voice dropdown</span> by the toggle to switch voices. Jump to any concept from the list on the left, or use the <span class="pill">search</span> bar above.
+    <br>For much better audio on a Mac: <b>System Settings → Accessibility → Spoken Content → System Voice → Manage Voices</b>, download an <b>Enhanced</b> English voice (e.g. "Ava (Enhanced)"), then reopen this page and pick it (marked ★).
+    <br>Modular build — open <b>index.html</b> directly (no server needed). Edit a single file in <code>sections/</code> to change one section; edit <code>assets/views_ddl.js</code> to update catalog-view reference.
+  </footer>
+
+  <div class="fb-wrap">
+    <a class="fb-btn" id="fbBtn" href="#" target="_blank" rel="noopener">📝 Give feedback on this explainer</a>
+    <div class="fb-note" id="fbNote">Takes ~2 minutes · helps improve this guide</div>
+  </div>
+</div>
+
+<!-- view DDL / reference modal -->
+<div class="vm-overlay" id="viewModal" role="dialog" aria-modal="true">
+  <div class="vm-box">
+    <div class="vm-top">
+      <span class="vm-title" id="viewModalTitle">bdr.view</span>
+      <button class="vm-x" onclick="closeView()" title="Close">✕</button>
+    </div>
+    <div class="vm-body" id="viewModalBody"></div>
+  </div>
+</div>
+
+<!-- 1) drawings  2) authoritative view defs  3) CLI map  4) monitoring/settings/CLI reference -->
+<script src="assets/scenes.js"></script>
+<script src="assets/views_ref.js"></script>
+<script src="assets/cli_commands.js"></script>
+<script src="assets/reference.js"></script>
+<script src="assets/stories.js"></script>
+<script src="assets/motion_lib.js"></script>
+<script src="assets/motion_wb.js"></script>
+<script src="assets/story_raft.js"></script>
+<script src="assets/story_motion.js"></script>
+<script src="assets/story_pilot.js"></script>
+<script src="assets/story_whiteboard.js"></script>
+<!-- 5) section content (edit any one of these independently) -->
+<script src="sections/00_intro.js"></script>
+<script src="sections/05_architecture.js"></script>
+<script src="sections/10_foundations.js"></script>
+<script src="sections/20_conflicts.js"></script>
+<script src="sections/30_coordination.js"></script>
+<script src="sections/40_durability.js"></script>
+<script src="sections/50_v4.js"></script>
+<script src="sections/60_v5.js"></script>
+<script src="sections/70_v6.js"></script>
+<script src="sections/80_sequences.js"></script>
+<script src="sections/90_operations.js"></script>
+<script src="sections/95_troubleshooting.js"></script>
+<script src="sections/97_pgd4k.js"></script>
+<!-- 4) knowledge-check quiz banks (chapter-end + final review) -->
+<script src="assets/quizzes.js"></script>
+<!-- 5) player + search + modal -->
+<script src="assets/app.js"></script>
+</body>
+</html>

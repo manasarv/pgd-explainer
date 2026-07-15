@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PGD — Animation Directive Previews</title>
+<style>
+  :root{
+    --bg:#121212; --card:#1a1a1c; --card-b:#2a2a2e;
+    --ink:#eceff3; --mut:#9aa7b4;
+    --teal:#1D9E75; --teal-l:#5DCAA5; --teal-d:#15352b;
+    --purple:#7F77DD; --purple-l:#AFA9EC; --purple-d:#241f3f;
+    --amber:#EF9F27; --amber-l:#FAC775; --amber-d:#3b2e10;
+    --green:#3ddc84; --green-l:#97C459;
+    --red:#EF4444; --red-l:#F0997B;
+    --line:#39485a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,system-ui,-apple-system,sans-serif;}
+  header{max-width:1100px;margin:0 auto;padding:36px 20px 10px;}
+  header h1{font-size:26px;margin:0 0 8px;}
+  header p{color:var(--mut);line-height:1.55;max-width:820px;margin:0 0 6px;}
+  header .badge{display:inline-block;background:var(--purple-d);color:var(--purple-l);border:1px solid var(--purple);
+    border-radius:20px;padding:3px 12px;font-size:12.5px;margin-right:8px;}
+  .legend{max-width:1100px;margin:14px auto 0;padding:0 20px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--mut);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  main{max-width:1100px;margin:0 auto;padding:20px 20px 80px;display:flex;flex-direction:column;gap:34px;}
+  .card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;overflow:hidden;}
+  .card.light{background:#FAFAFA;}
+  .card-head{padding:18px 22px 4px;}
+  .card-head .tag{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--teal-l);font-weight:600;}
+  .card.light .card-head .tag{color:#8a6d1f;}
+  .card-head h2{margin:4px 0 4px;font-size:19px;}
+  .card.light .card-head h2{color:#222;}
+  .card-head .note{font-size:12.5px;color:var(--mut);margin:0 0 12px;line-height:1.5;}
+  .card.light .card-head .note{color:#6b6b6b;}
+  .canvas-wrap{padding:0 10px 18px;display:flex;justify-content:center;}
+  svg{width:100%;max-width:620px;height:auto;display:block;}
+  footer{max-width:1100px;margin:0 auto;padding:0 20px 60px;color:var(--mut);font-size:12.5px;line-height:1.6;}
+  code{background:#00000055;padding:1px 5px;border-radius:4px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>PGD Animation Directive — Standalone Previews</h1>
+  <p><span class="badge">New file</span> This is a self-contained comparison build. It does not modify any file under
+  <code>sections/</code> or <code>assets/</code> — open <code>index.html</code> in another tab to compare against the
+  live app. Each scene below is a self-running SMIL loop (same technique as the existing "Raft consensus" cinematic
+  scene): it plays automatically, no clicking required, and repeats on a fixed cycle.</p>
+  <div class="legend">
+    <span><i style="background:var(--teal)"></i>Node (primary)</span>
+    <span><i style="background:var(--purple)"></i>Node (secondary / upgraded)</span>
+    <span><i style="background:var(--green)"></i>Success</span>
+    <span><i style="background:var(--red)"></i>Conflict / alert</span>
+    <span><i style="background:var(--amber)"></i>Pending</span>
+  </div>
+</header>
+<main>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="tag">Scene 05 · Architecture</div>
+      <h2>Dark Mesh Network — write, replicate, partition, recover</h2>
+      <p class="note">New standalone scene (not wired into <code>05_architecture.js</code>, which keeps its v4→v6
+      evolution content). Three regions in a fully-meshed triangle; a write lands on US East, replicates concurrently,
+      a partition isolates AP South, writes buffer, then flush through on recovery.</p>
+    </div>
+    <div class="canvas-wrap" id="sceneA"></div>
+  </section>
+
+  <section class="card light">
+    <div class="card-head">
+      <div class="tag">Scene 20 · Conflicts</div>
+      <h2>Hand-Drawn Whiteboard — concurrent writes collide</h2>
+      <p class="note">Deliberate light "whiteboard" break from the dark canvas, as called for in the directive — signals
+      a step-back walkthrough moment distinct from the technical mesh/cluster diagrams elsewhere in the course.</p>
+    </div>
+    <div class="canvas-wrap" id="sceneB"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="tag">Scene 30/40 · Coordination &amp; Durability</div>
+      <h2>Kinetic Step-Sequencing — CAMO commit handshake</h2>
+      <p class="note">Three-column flow: App Server → Local Node → CAMO Partner Node. Local node withholds its reply
+      until the partner confirms, then releases success back to the app.</p>
+    </div>
+    <div class="canvas-wrap" id="sceneC"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="tag">Scene 80 · Sequences</div>
+      <h2>Supply-Chain Conveyor Grid — block-allocated IDs</h2>
+      <p class="note">A global manager hands each node a numeric block; each node then allocates locally with zero
+      network chatter, and requests a fresh block only when its own runs out.</p>
+    </div>
+    <div class="canvas-wrap" id="sceneD"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="tag">Scene 50/60/70 · Migrations</div>
+      <h2>Layered Gradient Shifting — zero-downtime rolling upgrade</h2>
+      <p class="note">New standalone scene (existing per-version files keep their unrelated feature content). One node
+      at a time is shielded, upgraded from teal (v4) to purple (v5/v6), then rejoins — traffic never stops.</p>
+    </div>
+    <div class="canvas-wrap" id="sceneE"></div>
+  </section>
+
+</main>
+<footer>
+  Built for comparison only — nothing in <code>sections/</code>, <code>assets/</code>, or <code>index.html</code> was
+  changed. Reduced-motion users: these loops respect no OS setting yet since this is a preview; the production versions
+  would follow the same <code>prefers-reduced-motion</code> convention already used in <code>app.js</code>.
+</footer>
+
+<script>
+function f(x){ return Math.round(x*1000)/1000; }
+
+/* helper factory — same idea as assets/motion_lib.js but parametrized per-scene duration */
+function makeH(dur){
+  function ani(attr,kt,vals){return '<animate attributeName="'+attr+'" dur="'+dur+'s" repeatCount="indefinite" calcMode="linear" keyTimes="'+kt+'" values="'+vals+'"/>';}
+  function vis(a,b){
+    a=Math.max(0,a); b=Math.min(1,b);
+    if(a<=0) return ani('opacity','0;'+f(b-0.01)+';'+f(b)+';1','1;1;0;0');
+    if(b>=1) return ani('opacity','0;'+f(a-0.01)+';'+f(a)+';1','0;0;1;1');
+    return ani('opacity','0;'+f(a-0.01)+';'+f(a)+';'+f(b-0.01)+';'+f(b)+';1','0;0;1;1;0;0');
+  }
+  function move(path,a,b,rotate){return '<animateMotion dur="'+dur+'s" repeatCount="indefinite" calcMode="linear" '+(rotate?'rotate="auto" ':'')+'path="'+path+'" keyTimes="0;'+f(a)+';'+f(b)+';1" keyPoints="0;0;1;1"/>';}
+  function token(path,a,b,color){
+    return '<g opacity="0" filter="url(#glow)">'+vis(a-0.015,b+0.03)
+      +'<path d="M-12 0 L-1 0 M-2 -6 L9 0 L-2 6 Z" fill="'+color+'" stroke="'+color+'" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>'
+      + move(path,a,b,true)
+      +'</g>';
+  }
+  function tst(x,y,t,size,fill,weight,extra){return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="'+size+'" fill="'+fill+'"'+(weight?' font-weight="600"':'')+(extra||'')+'>'+t+'</text>';}
+  function tan(x,y,t,size,fill,weight,inner,extra){return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="'+size+'" fill="'+fill+'"'+(weight?' font-weight="600"':'')+' opacity="0"'+(extra||'')+'>'+t+inner+'</text>';}
+  function flip(x,y,fromT,toT,frac,size,fromFill,toFill,weight){
+    return tan(x,y,fromT,size,fromFill,weight,vis(0,frac)) + tan(x,y,toT,size,toFill,weight,vis(frac,1));
+  }
+  function draw(a,b,len){ return ani('stroke-dashoffset','0;'+f(a)+';'+f(b)+';1', len+';'+len+';0;0'); }
+  return {ani:ani,vis:vis,move:move,token:token,tst:tst,tan:tan,flip:flip,draw:draw,dur:dur};
+}
+
+function glowDefs(id){return '<defs><filter id="'+id+'" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';}
+
+function cylGeom(x,y,w,h){var rx=w/2,ry=Math.max(7,Math.min(13,Math.round(h*0.20)));return {cx:x+w/2,rx:rx,ry:ry,ty:y+ry,by:y+h-ry,r:x+w};}
+function cylStatic(x,y,w,h,stroke){
+  var g=cylGeom(x,y,w,h);
+  return '<g>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.by+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="none" stroke="'+stroke+'" stroke-width="2.2"/>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.by+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="'+stroke+'" fill-opacity="0.14" stroke="'+stroke+'" stroke-opacity="0.4"/>'
+    +'<path d="M'+x+','+g.ty+' L'+x+','+g.by+' A'+g.rx+','+g.ry+' 0 0 0 '+g.r+','+g.by+' L'+g.r+','+g.ty+' Z" fill="rgba(255,255,255,0.075)" stroke="'+stroke+'" stroke-opacity="0.55" stroke-width="1.1"/>'
+    +'<path d="M'+(x+5)+','+(g.ty+3)+' L'+(x+5)+','+(g.by-3)+'" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.ty+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="rgba(255,255,255,0.20)" stroke="'+stroke+'" stroke-width="1.2"/>'
+    +'</g>';
+}
+function cylAnim(x,y,w,h,H,kt,fills,strokes){
+  var g=cylGeom(x,y,w,h), s0=strokes.split(';')[0], f0=fills.split(';')[0], sa=H.ani('stroke',kt,strokes);
+  return '<g>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.by+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="none" stroke="'+s0+'" stroke-width="2.4">'+sa+'</ellipse>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.by+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="'+f0+'" fill-opacity="0.18" stroke="'+s0+'" stroke-opacity="0.4">'+H.ani('fill',kt,fills)+'</ellipse>'
+    +'<path d="M'+x+','+g.ty+' L'+x+','+g.by+' A'+g.rx+','+g.ry+' 0 0 0 '+g.r+','+g.by+' L'+g.r+','+g.ty+' Z" fill="rgba(255,255,255,0.075)" stroke="'+s0+'" stroke-opacity="0.6" stroke-width="1.2">'+sa+'</path>'
+    +'<path d="M'+(x+5)+','+(g.ty+3)+' L'+(x+5)+','+(g.by-3)+'" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+    +'<ellipse cx="'+g.cx+'" cy="'+g.ty+'" rx="'+g.rx+'" ry="'+g.ry+'" fill="rgba(255,255,255,0.20)" stroke="'+s0+'" stroke-width="1.3">'+sa+'</ellipse>'
+    +'</g>';
+}
+function line(x1,y1,x2,y2,color,w,op){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="'+(w||1.4)+'" opacity="'+(op==null?0.55:op)+'"/>';}
+
+var COL={
+  teal:'#1D9E75', tealL:'#5DCAA5',
+  purple:'#7F77DD', purpleL:'#AFA9EC',
+  amber:'#EF9F27', amberL:'#FAC775',
+  green:'#3ddc84', greenL:'#97C459',
+  red:'#EF4444', redL:'#F0997B',
+  ink:'#e8edf2', mut:'#9aa7b4', line:'#39485a'
+};
+
+/* ================= SCENE A — Dark Mesh Network ================= */
+function sceneA(){
+  var DUR=16, H=makeH(DUR);
+  var usC=[280,72], euC=[115,282], apC=[445,282];
+  var s='<svg viewBox="0 0 560 470" role="img"><title>Mesh network — write, replicate, partition, recover</title>'+glowDefs('gA');
+
+  /* ambient mesh lines: base + partition state on AP-touching links */
+  s+=line(240,104,150,254,COL.teal,1.6,0.5); // US-EU (always fine)
+  var apLineKT='0;0.40;0.44;0.62;0.66;1';
+  var apLineStroke=COL.teal+';'+COL.teal+';'+COL.red+';'+COL.red+';'+COL.teal+';'+COL.teal;
+  var apLineDash='0;0;6 5;6 5;0;0';
+  s+='<line x1="320" y1="104" x2="410" y2="254" stroke="'+COL.teal+'" stroke-width="1.6" opacity="0.6">'+H.ani('stroke',apLineKT,apLineStroke)+H.ani('stroke-dasharray',apLineKT,apLineDash)+'</line>';
+  s+='<line x1="190" y1="288" x2="370" y2="288" stroke="'+COL.teal+'" stroke-width="1.6" opacity="0.6">'+H.ani('stroke',apLineKT,apLineStroke)+H.ani('stroke-dasharray',apLineKT,apLineDash)+'</line>';
+  /* ambient pulse (independent short loop) on the always-up link */
+  s+='<line x1="240" y1="104" x2="150" y2="254" stroke="'+COL.tealL+'" stroke-width="1.6" opacity="0"><animate attributeName="opacity" values="0;0.35;0" dur="2.6s" repeatCount="indefinite"/></line>';
+
+  s+=H.tst(280,26,'🌐 MESH NETWORK',13,COL.mut,true);
+
+  /* nodes */
+  var usKT='0;0.40;0.44;1', usStroke=COL.teal+';'+COL.teal+';'+COL.teal+';'+COL.teal;
+  s+=cylStatic(205,40,150,64,COL.teal);
+  s+=H.tst(280,70,'US East',15,COL.ink,true);
+  s+=H.tan(280,120,'writer',12,COL.mut,false,H.vis(0,1));
+
+  var euKT='0;1', euStroke=COL.teal;
+  s+=cylStatic(40,250,150,64,COL.teal);
+  s+=H.tst(115,280,'EU West',15,COL.ink,true);
+  s+=H.tan(115,330,'replica',12,COL.mut,false,H.vis(0,1));
+
+  var apKT='0;0.40;0.44;0.62;0.66;1', apFills=COL.teal+';'+COL.teal+';#3a3a3a;#3a3a3a;'+COL.teal+';'+COL.teal, apStrokes=apFills;
+  s+=cylAnim(370,250,150,64,H,apKT,apFills,apStrokes);
+  s+=H.tst(445,280,'AP South',15,COL.ink,true);
+  s+=H.tan(445,330,'replica',12,COL.mut,false,H.vis(0,0.42));
+  s+=H.tan(445,330,'✗ partitioned',12,COL.red,true,H.vis(0.42,0.64));
+  s+=H.tan(445,330,'replica',12,COL.greenL,false,H.vis(0.64,1));
+
+  /* highlight pulse rings */
+  s+='<ellipse cx="280" cy="72" rx="90" ry="38" fill="none" stroke="'+COL.amber+'" stroke-width="2" opacity="0">'+H.vis(0.10,0.20)+'</ellipse>';
+  s+='<ellipse cx="115" cy="282" rx="90" ry="38" fill="none" stroke="'+COL.teal+'" stroke-width="2" opacity="0">'+H.vis(0.32,0.40)+'</ellipse>';
+  s+='<ellipse cx="445" cy="282" rx="90" ry="38" fill="none" stroke="'+COL.teal+'" stroke-width="2" opacity="0">'+H.vis(0.32,0.40)+'</ellipse>';
+  s+='<ellipse cx="445" cy="282" rx="90" ry="38" fill="none" stroke="'+COL.teal+'" stroke-width="2" opacity="0">'+H.vis(0.66,0.74)+'</ellipse>';
+
+  /* "Write SQL" packet drop onto US East */
+  s+=H.token('M280 -10 L280 40',0.06,0.12,COL.amber);
+  s+=H.tan(280,52,'WRITE SQL',10.5,COL.amber,true,H.vis(0.05,0.15));
+
+  /* split concurrent replication */
+  s+=H.token('M255 104 L165 254',0.20,0.32,COL.teal);
+  s+=H.token('M310 104 L400 254',0.20,0.32,COL.teal);
+
+  /* buffer ring near US East during partition */
+  s+='<ellipse cx="280" cy="170" rx="26" ry="20" fill="none" stroke="'+COL.amber+'" stroke-width="1.6" stroke-dasharray="4 4" opacity="0">'+H.vis(0.44,0.66)+'</ellipse>';
+  s+=H.tan(280,175,'⏳',16,COL.amberL,false,H.vis(0.44,0.66));
+  [0.46,0.51,0.56,0.61].forEach(function(t,i){
+    s+='<circle cx="'+(268+i*8)+'" cy="'+(178)+'" r="4" fill="'+COL.amberL+'" opacity="0">'+H.vis(t,0.66)+'</circle>';
+  });
+  s+=H.tan(280,206,'3 queued writes',11,COL.amberL,false,H.vis(0.52,0.66));
+
+  /* flush buffered writes to AP South */
+  s+=H.token('M300 172 L410 254',0.67,0.78,COL.amber);
+  s+=H.token('M295 178 L405 260',0.70,0.80,COL.amber);
+  s+=H.token('M290 184 L400 266',0.73,0.82,COL.amber);
+
+  /* captions */
+  var cy=452;
+  s+=H.tan(280,cy,'Three regions, fully meshed — every node can accept writes.',15.5,COL.ink,false,H.vis(0,0.06));
+  s+=H.tan(280,cy,'A write lands on US East and commits locally.',15.5,COL.ink,false,H.vis(0.06,0.20));
+  s+=H.tan(280,cy,'It replicates concurrently to EU West and AP South.',15.5,COL.ink,false,H.vis(0.20,0.40));
+  s+=H.tan(280,cy,'A network partition isolates AP South.',15.5,COL.redL,false,H.vis(0.40,0.44));
+  s+=H.tan(280,cy,'US East buffers writes destined for AP South until the link recovers.',15.5,COL.amberL,false,H.vis(0.44,0.66));
+  s+=H.tan(280,cy,'Connectivity returns — buffered changes flush through in order.',15.5,COL.tealL,false,H.vis(0.66,0.84));
+  s+=H.tan(280,cy,'AP South catches up and all three regions converge.',15.5,COL.greenL,false,H.vis(0.84,1.0));
+
+  s+='</svg>';
+  return s;
+}
+
+/* ================= SCENE B — Hand-Drawn Whiteboard ================= */
+function sceneB(){
+  var DUR=15, H=makeH(DUR);
+  var INK='#2B2B2B', PAPER='#FAFAFA', RED='#D64545', GREEN='#2E9E4F', BLUE='#3B6FD6';
+  var s='<svg viewBox="0 0 560 500" role="img"><title>Whiteboard conflict walkthrough</title>'+glowDefs('gB');
+  s+='<rect x="0" y="0" width="560" height="500" fill="'+PAPER+'"/>';
+  /* faint whiteboard tray line */
+  s+='<line x1="30" y1="470" x2="530" y2="470" stroke="#d8d3c4" stroke-width="4"/>';
+  s+='<text x="280" y="34" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="19" fill="'+INK+'" font-weight="700">Same row, same instant — two writers</text>';
+
+  /* client labels + hand-drawn tracks */
+  s+='<text x="105" y="70" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="17" fill="'+BLUE+'" font-weight="700">Client A</text>';
+  s+='<text x="455" y="70" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="17" fill="'+BLUE+'" font-weight="700">Client B</text>';
+  s+='<path d="M105 88 Q170 220 280 335" fill="none" stroke="'+INK+'" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>';
+  s+='<path d="M455 88 Q390 220 280 335" fill="none" stroke="'+INK+'" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>';
+
+  /* value labels with hand-drawn underline draw-on */
+  s+=H.tan(105,112,'active  (t1)',15,BLUE,true,H.vis(0.02,1));
+  s+='<path d="M65 120 Q105 128 148 119" fill="none" stroke="'+BLUE+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="120" opacity="0">'+H.vis(0.02,1)+H.draw(0.03,0.12,120)+'</path>';
+  s+=H.tan(455,112,'inactive  (t2)',15,BLUE,true,H.vis(0.02,1));
+  s+='<path d="M410 120 Q455 129 500 119" fill="none" stroke="'+BLUE+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="120" opacity="0">'+H.vis(0.02,1)+H.draw(0.03,0.12,120)+'</path>';
+
+  /* DB icon at convergence */
+  s+='<g transform="translate(280,335)">'
+    +'<ellipse cx="0" cy="30" rx="55" ry="16" fill="none" stroke="'+INK+'" stroke-width="2.2"/>'
+    +'<path d="M-55 0 L-55 30 A55 16 0 0 0 55 30 L55 0" fill="#fff" stroke="'+INK+'" stroke-width="2.2"/>'
+    +'<ellipse cx="0" cy="0" rx="55" ry="16" fill="#fff" stroke="'+INK+'" stroke-width="2.2"/>'
+    +'</g>';
+  s+=H.flip(280,340,'?','inactive',0.80,14,'#999',GREEN,true);
+
+  /* tokens sliding toward center */
+  s+=H.token('M105 92 Q170 220 275 330',0.13,0.29,BLUE);
+  s+=H.token('M455 92 Q390 220 285 330',0.13,0.29,BLUE);
+
+  /* collision starburst */
+  s+='<g opacity="0" transform="translate(280,325)">'+H.vis(0.29,0.40)
+    +'<path d="M0,-30 L8,-8 L30,-10 L12,6 L20,28 L0,14 L-20,28 L-12,6 L-30,-10 L-8,-8 Z" fill="'+RED+'" fill-opacity="0.18" stroke="'+RED+'" stroke-width="2.4"/>'
+    +'</g>';
+  s+=H.tan(280,300,'💥 CONFLICT DETECTED',16.5,RED,true,H.vis(0.30,0.42));
+
+  /* magnifying glass sweeping between timestamps */
+  s+='<g opacity="0">'+H.vis(0.42,0.56)
+    +'<animateTransform attributeName="transform" type="translate" dur="'+DUR+'s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.42;0.49;0.56;1" values="105,100;105,100;455,100;455,100;455,100"/>'
+    +'<circle cx="0" cy="0" r="20" fill="none" stroke="'+INK+'" stroke-width="3"/>'
+    +'<line x1="14" y1="14" x2="30" y2="30" stroke="'+INK+'" stroke-width="4" stroke-linecap="round"/>'
+    +'</g>';
+
+  /* verdict: check over B, X over A */
+  s+='<path d="M78 112 L96 130 L134 96" fill="none" stroke="'+RED+'" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="140" opacity="0">'+H.vis(0.56,1)+H.draw(0.56,0.62,140)+'</path>'
+    +'<path d="M78 96 L134 130 M134 96 L78 130" fill="none" stroke="'+RED+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="180" opacity="0">'+H.vis(0.56,1)+H.draw(0.56,0.62,180)+'</path>';
+  s+='<path d="M428 112 L446 130 L484 96" fill="none" stroke="'+GREEN+'" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="140" opacity="0">'+H.vis(0.56,1)+H.draw(0.56,0.64,140)+'</path>';
+
+  /* folder icon + losing write sweeping into it */
+  s+='<g transform="translate(70,420)" opacity="0">'+H.vis(0.66,1)
+    +'<path d="M-30,-14 L-10,-14 L-4,-4 L30,-4 L30,16 L-30,16 Z" fill="#FFF6D8" stroke="'+INK+'" stroke-width="2.2"/>'
+    +'<text x="0" y="34" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="13" fill="'+INK+'">Conflict Log</text>'
+    +'</g>';
+  s+=H.token('M105 118 Q60 260 70 410',0.66,0.80,RED);
+
+  /* captions */
+  var cy=486;
+  s+='<text id="capB" x="280" y="'+cy+'" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="15" fill="'+INK+'"></text>';
+  function cap(t,a,b,col){ s+='<text x="280" y="'+cy+'" text-anchor="middle" font-family="Segoe Print,Bradley Hand,Comic Sans MS,cursive" font-size="15" fill="'+(col||INK)+'" opacity="0">'+t+H.vis(a,b)+'</text>'; }
+  cap('Client A writes ‘active’ at t1; Client B writes ‘inactive’ at t2 — same row.',0,0.13);
+  cap('Both changes race toward the same row.',0.13,0.29);
+  cap('Same row, two different values — a conflict.',0.29,0.42,RED);
+  cap('PGD compares commit timestamps to settle it.',0.42,0.56);
+  cap('Later timestamp wins — last update wins.',0.56,0.66,GREEN);
+  cap('The losing write is archived to the conflict log.',0.66,0.82);
+  cap('Every copy converges on Client B’s value.',0.82,1.0,GREEN);
+
+  s+='</svg>';
+  return s;
+}
+
+/* ================= SCENE C — CAMO Kinetic Step-Sequencing ================= */
+function sceneC(){
+  var DUR=14, H=makeH(DUR);
+  var s='<svg viewBox="0 0 560 460" role="img"><title>CAMO commit handshake</title>'+glowDefs('gC');
+
+  s+=H.tst(280,26,'⚙ COMMIT-AT-MOST-ONCE (CAMO)',13,COL.mut,true);
+
+  /* App Server panel */
+  s+='<rect x="20" y="188" width="140" height="66" rx="10" fill="#1c2430" stroke="'+COL.line+'" stroke-width="1.6"/>';
+  s+=H.tst(90,216,'App Server',14.5,COL.ink,true);
+  s+=H.tst(90,238,'awaiting reply',11,COL.mut,false);
+
+  /* Local Node cylinder */
+  var lKT='0;0.06;0.16;0.52;0.62;1';
+  var lFill=COL.teal+';'+COL.teal+';'+COL.amber+';'+COL.amber+';'+COL.green+';'+COL.green;
+  s+=cylAnim(205,168,150,92,H,lKT,lFill,lFill);
+  s+=H.tst(280,214,'Local Node',15,'#101216',true);
+  var lSub=H.tan(280,278,'idle',12.5,COL.mut,false,H.vis(0,0.06));
+  lSub+=H.tan(280,278,'⏳ Pending',13,COL.amberL,true,H.vis(0.08,0.52));
+  lSub+=H.tan(280,278,'✓ Committed · 200 OK',13,COL.greenL,true,H.vis(0.54,1));
+  s+=lSub;
+
+  /* Partner Node cylinder */
+  var pKT='0;0.28;0.38;1', pFill=COL.teal+';'+COL.teal+';'+COL.green+';'+COL.green;
+  s+=cylAnim(390,168,150,92,H,pKT,pFill,pFill);
+  s+=H.tst(465,214,'CAMO Partner',14.5,'#101216',true);
+  s+=H.tan(465,278,'standing by',12.5,COL.mut,false,H.vis(0,0.28));
+  s+=H.tan(465,278,'✓ confirmed',13,COL.greenL,true,H.vis(0.30,1));
+  s+=H.tan(465,196,'✓',26,COL.greenL,true,H.vis(0.30,0.40));
+
+  /* beams */
+  s+=H.token('M160 214 L205 214',0.04,0.14,COL.amber);            // App -> Local: COMMIT
+  s+=H.tst(182,200,'COMMIT',10,COL.amberL,true);
+  s+=H.token('M355 200 L390 200',0.16,0.28,COL.amber);            // Local -> Partner: prepare check
+  s+=H.tan(372,188,'prepare check',10,COL.amberL,true,H.vis(0.16,0.30));
+  s+=H.token('M390 232 L355 232',0.38,0.50,COL.green);            // Partner -> Local: ack
+  s+=H.tan(372,248,'ack',10,COL.greenL,true,H.vis(0.38,0.52));
+  s+=H.token('M205 220 L160 220',0.62,0.74,COL.green);            // Local -> App: success
+  s+=H.tst(182,234,'200 OK',10,COL.greenL,true);
+
+  var cy=440;
+  s+=H.tan(280,cy,'The app sends COMMIT to the local node.',15.5,COL.ink,false,H.vis(0,0.16));
+  s+=H.tan(280,cy,'Instead of replying immediately, the local node checks with its CAMO partner first.',15.5,COL.amberL,false,H.vis(0.16,0.38));
+  s+=H.tan(280,cy,'The partner confirms it has the write and mirrors the state, then acknowledges.',15.5,COL.greenL,false,H.vis(0.38,0.62));
+  s+=H.tan(280,cy,'Only now does the local node tell the app it succeeded — the write can never be lost or duplicated.',15.5,COL.ink,false,H.vis(0.62,1));
+
+  s+='</svg>';
+  return s;
+}
+
+/* ================= SCENE D — Sequences Conveyor Grid ================= */
+function sceneD(){
+  var DUR=16, H=makeH(DUR);
+  var s='<svg viewBox="0 0 560 500" role="img"><title>Distributed sequence block allocation</title>'+glowDefs('gD');
+
+  s+=H.tst(280,26,'📦 GLOBAL SEQUENCE MANAGER',13,COL.mut,true);
+  s+='<path d="M230 40 L330 40 L310 66 L250 66 Z" fill="'+COL.purple+'" fill-opacity="0.25" stroke="'+COL.purple+'" stroke-width="1.8"/>';
+  s+=H.tst(280,58,'manager',10.5,COL.purpleL,false);
+
+  var rows=[
+    {y:120, label:'Node 1', block:'1–1000'},
+    {y:250, label:'Node 2', block:'1001–2000'},
+    {y:380, label:'Node 3', block:'2001–3000'}
+  ];
+  rows.forEach(function(r,i){
+    s+='<rect x="60" y="'+r.y+'" width="440" height="54" rx="10" fill="#1c2430" stroke="'+COL.line+'" stroke-width="1.4"/>';
+    s+=cylStatic(60,r.y-30,100,58,COL.teal);
+    s+=H.tst(110,r.y-0,r.label,12.5,COL.ink,true);
+    /* drop tube from manager */
+    var path='M280 66 Q'+(280)+' '+((66+r.y)/2)+' '+(110)+' '+(r.y-30);
+    s+=H.token(path,0.08+i*0.03,0.20+i*0.03,COL.purple);
+    s+=H.tan(110,r.y+70,'block '+r.block,11,COL.purpleL,true,H.vis(0.20+i*0.03,1));
+  });
+
+  /* focus dimming of node 2 row while node 1 is zoomed */
+  s+='<rect x="55" y="'+(rows[1].y-36)+'" width="450" height="66" rx="12" fill="#000" opacity="0">'
+    +H.ani('opacity','0;0.28;0.30;0.60;0.62;1','0;0;0.35;0.35;0;0')+'</rect>';
+
+  /* Node 1 rapid local allocation */
+  s+='<g opacity="0">'+H.vis(0.28,0.58)
+    +'<rect x="60" y="120" width="440" height="54" rx="10" fill="none" stroke="'+COL.amber+'" stroke-width="2"/>'
+    +'</g>';
+  var counters=['1','2','3','…','247','…','512','…','999'];
+  var span=0.58-0.30;
+  counters.forEach(function(txt,i){
+    var a=0.30+span*(i/counters.length), b=0.30+span*((i+1)/counters.length);
+    s+=H.tan(430,142,txt,15,COL.amberL,true,H.vis(a,b));
+  });
+  [0,1,2].forEach(function(i){
+    s+='<circle cx="'+(160+i*30)+'" cy="132" r="4" fill="'+COL.tealL+'" opacity="0">'+H.vis(0.30,0.58)
+      +'<animateMotion dur="0.7s" begin="'+(i*0.15)+'s" repeatCount="indefinite" path="M0 0 L220 0"/></circle>';
+  });
+  s+=H.tan(280,196,'no network round-trip needed',11.5,COL.mut,false,H.vis(0.30,0.58));
+
+  /* block exhausted */
+  s+='<rect x="60" y="120" width="440" height="54" rx="10" fill="'+COL.red+'" fill-opacity="0" stroke="'+COL.red+'" stroke-width="0">'
+    +H.ani('fill-opacity','0;0.58;0.62;0.72;0.76;1','0;0;0.22;0.22;0;0')
+    +H.ani('stroke-width','0;0.58;0.62;0.72;0.76;1','0;0;2.4;2.4;0;0')+'</rect>';
+  s+=H.tan(280,150,'1000 / 1000 used',13.5,COL.redL,true,H.vis(0.60,0.72));
+
+  /* signal beam back to manager, then fresh block down */
+  s+=H.token('M120 118 Q160 90 260 66',0.62,0.72,COL.red);
+  s+=H.token('M280 66 Q280 90 120 118',0.74,0.86,COL.purple);
+  s+=H.tan(110,196,'block 3001–4000',11.5,COL.purpleL,true,H.vis(0.86,1));
+
+  var cy=470;
+  s+=H.tan(280,cy,'The global manager pre-allocates a block of IDs to each node.',15.5,COL.ink,false,H.vis(0,0.28));
+  s+=H.tan(280,cy,'Node 1 hands out numbers from its own block — fast, and clash-free.',15.5,COL.amberL,false,H.vis(0.28,0.58));
+  s+=H.tan(280,cy,'Node 1 exhausts its block and signals the manager.',15.5,COL.redL,false,H.vis(0.58,0.74));
+  s+=H.tan(280,cy,'A fresh block slides down and Node 1 resumes — without touching the other nodes.',15.5,COL.greenL,false,H.vis(0.74,1));
+
+  s+='</svg>';
+  return s;
+}
+
+/* ================= SCENE E — Layered Gradient Shifting (rolling upgrade) ================= */
+function sceneE(){
+  var DUR=18, H=makeH(DUR);
+  var s='<svg viewBox="0 0 560 420" role="img"><title>Zero-downtime rolling upgrade</title>'+glowDefs('gE');
+
+  var cyls=[
+    {x:40,  wave:[0.06,0.17,0.28,0.36]},
+    {x:215, wave:[0.42,0.52,0.63,0.72]},
+    {x:390, wave:[0.72,0.82,0.93,1.00]}
+  ];
+  var W=130,Y=150,Hh=110;
+
+  /* connecting replication lines, dimmed during each cylinder's isolation window */
+  function lineDim(x1,x2,w){
+    var kt='0;'+w[0]+';'+w[1]+';'+w[2]+';'+w[3]+';1';
+    var op='0.55;0.55;0.15;0.15;0.55;0.55';
+    return '<line x1="'+x1+'" y1="'+(Y+Hh/2)+'" x2="'+x2+'" y2="'+(Y+Hh/2)+'" stroke="'+COL.tealL+'" stroke-width="2">'+H.ani('opacity',kt,op)+'</line>';
+  }
+  s+=lineDim(cyls[0].x+W, cyls[1].x, cyls[0].wave);
+  s+=lineDim(cyls[1].x+W, cyls[2].x, cyls[2].wave);
+
+  s+=H.tst(280,26,'↻ ROLLING UPGRADE — ZERO DOWNTIME',13,COL.mut,true);
+
+  cyls.forEach(function(c,i){
+    var w=c.wave, kt='0;'+w[0]+';'+w[1]+';1', fills=COL.teal+';'+COL.teal+';'+COL.purple+';'+COL.purple;
+    s+=cylAnim(c.x,Y,W,Hh,H,kt,fills,fills);
+    var cx=c.x+W/2;
+    s+=H.tst(cx,Y+Hh/2+5,'Node '+(i+1),14.5,'#101216',true);
+    var frac=(w[0]+w[1])/2;
+    s+=H.flip(cx,Y+Hh+26,'PGD v4','PGD v5/v6',frac,12,COL.tealL,COL.purpleL,true);
+
+    /* ambient traffic particles inside cylinder, dimmed while this node is shielded/isolated */
+    var dimKT='0;'+w[0]+';'+(w[0]+0.02)+';'+w[2]+';'+(w[2]+0.02)+';1';
+    var dimOp='1;1;0.15;0.15;1;1';
+    s+='<g opacity="1">'+H.ani('opacity',dimKT,dimOp);
+    for(var k=0;k<3;k++){
+      var begin=(k*0.5)+'s';
+      s+='<circle cx="'+(c.x+16)+'" cy="0" r="3.2" fill="'+COL.greenL+'" opacity="0">'
+        + '<animate attributeName="opacity" values="0;0.9;0.9;0" keyTimes="0;0.15;0.85;1" dur="1.6s" begin="'+begin+'" repeatCount="indefinite"/>'
+        + '<animateMotion dur="1.6s" begin="'+begin+'" repeatCount="indefinite" path="M0 '+(Y+Hh-10)+' L0 '+(Y+10)+'"/>'
+        + '</circle>';
+    }
+    s+='</g>';
+
+    /* shield capsule descending over this node during its wave */
+    var shieldKT='0;'+w[0]+';'+(w[0]+0.03)+';'+w[2]+';'+w[3]+';1';
+    var shieldOp='0;0;0.9;0.9;0;0';
+    s+='<g opacity="0">'+H.ani('opacity',shieldKT,shieldOp)
+      +'<rect x="'+(c.x-10)+'" y="'+(Y-20)+'" width="'+(W+20)+'" height="'+(Hh+40)+'" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="'+COL.purpleL+'" stroke-width="1.8" stroke-dasharray="6 5"/>'
+      +'<text x="'+cx+'" y="'+(Y-28)+'" text-anchor="middle" font-size="15">🛡</text>'
+      +'</g>';
+  });
+
+  var cy=396;
+  s+=H.tan(280,cy,'Three-node cluster running PGD v4, serving live traffic.',15.5,COL.ink,false,H.vis(0,0.06));
+  s+=H.tan(280,cy,'A rolling upgrade begins — Node 1 is shielded and isolated from replication.',15.5,COL.purpleL,false,H.vis(0.06,0.17));
+  s+=H.tan(280,cy,'Behind the shield it upgrades to PGD v6 while Node 2 and Node 3 keep serving.',15.5,COL.purpleL,false,H.vis(0.17,0.36));
+  s+=H.tan(280,cy,'Node 1 rejoins on the new version — zero downtime. Node 2 is next.',15.5,COL.greenL,false,H.vis(0.36,0.63));
+  s+=H.tan(280,cy,'Node 2 rejoins; Node 3 takes its turn behind the shield.',15.5,COL.greenL,false,H.vis(0.63,0.93));
+  s+=H.tan(280,cy,'The entire cluster now runs PGD v6 — upgraded node by node, without a second of downtime.',15.5,COL.greenL,false,H.vis(0.93,1));
+
+  s+='</svg>';
+  return s;
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('sceneA').innerHTML=sceneA();
+  document.getElementById('sceneB').innerHTML=sceneB();
+  document.getElementById('sceneC').innerHTML=sceneC();
+  document.getElementById('sceneD').innerHTML=sceneD();
+  document.getElementById('sceneE').innerHTML=sceneE();
+});
+</script>
+</body>
+</html>

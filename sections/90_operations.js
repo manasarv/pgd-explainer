@@ -1,0 +1,35 @@
+/* Section: operations & recovery — edit this file to change ONLY this section. */
+window.PGD_GROUPS = window.PGD_GROUPS || [];
+window.PGD_GROUPS.push(
+  { label:'Operations & recovery', badge:'PGD 6', steps:[
+    {t:'PITR with Barman', tag:'new', chap:'Operations & recovery', sc:s_pitr, rv:['c1','c2','barman','seed','n'], fl:['b1','b2','r'],
+      an:'A vault keeps a rolling copy of every notebook plus a log of every edit, so you can rewind to any moment and start a fresh group from that snapshot.',
+      re:'<b>Barman</b> continuously backs up the cluster and archives WAL. For point-in-time recovery you restore a Barman backup to a chosen moment onto a fresh node, then use that node as the <b>seed</b> for a new PGD cluster.',
+      nr:'Barman continuously backs up the cluster and archives write-ahead logs. For point-in-time recovery, you restore a Barman backup to a chosen moment onto a fresh node, then use that node as the seed for a new PGD cluster.',
+      hb:'v6 runbook 46 — PGD-X cluster with a Barman server, recover into a seed node',
+      bv:[['bdr.node_group_summary','group type and topology of the cluster being rebuilt'],['bdr.node_summary','node states while the recovered seed re-forms the cluster']]},
+    {t:'Eager replication', tag:'new', chap:'Operations & recovery', sc:s_eager, rv:['app','lead','peers','chk','n'], fl:['a','b','back'],
+      an:'Before the receipt prints, every branch must confirm they have written the sale — and any disagreement is caught right then, not later.',
+      re:'<b>Eager replication</b> is a Group-Commit commit scope where a transaction is applied on <b>all</b> nodes and conflicts are detected <b>before</b> commit returns — the strongest consistency. In v6 it needs Parallel Apply off (<code>bdr.writers_per_subscription = 1</code>).',
+      nr:'Eager replication is a group-commit commit scope where a transaction is applied on all nodes and conflicts are detected before the commit returns. It gives the strongest consistency. In version six it requires Parallel Apply to be turned off by setting writers per subscription to one.',
+      hb:'v6 runbook 94 — Eager via a Group Commit commit scope',
+      bv:[['bdr.commit_scopes','the commit scope rule defining eager / group commit'],['bdr.stat_commit_scope','per-backend active commit scope usage']]},
+    {t:'Resynchronize a table', tag:'core', chap:'Operations & recovery', sc:s_resync, rv:['bad','good','fn','n'], fl:['pull','push'],
+      an:'One friend accidentally erased a page. Instead of rewriting the whole notebook, they photocopy just that page from a friend who still has it.',
+      re:'<b>bdr.resynchronize_table_from_node(node_name, relation)</b> re-copies a single table from a healthy peer. It repairs one table after a non-replicated TRUNCATE or DELETE, without rebuilding the whole node. It blocks until done and returns the row count copied.',
+      nr:'The function bdr dot resynchronize table from node re-copies a single table from a healthy peer. It repairs one table after a non-replicated truncate or delete, without rebuilding the whole node. It blocks until finished and returns how many rows were copied.',
+      hb:'v6 runbook 65 — recover a table truncated in a non-replicated transaction',
+      bv:[['bdr.subscription_summary','confirm inbound replication is healthy before/after resync'],['bdr.node_slots','check the slot to the source node is active during the copy']]},
+    {t:'Skip changes up to an LSN', tag:'core', chap:'Operations & recovery', sc:s_skipchanges, rv:['stuck','lsn','skip','n','warn'], fl:['a','b'],
+      an:'A jammed page keeps stopping the whole copying line. As a last resort you mark "skip everything up to here" so the line can move again — knowing you may lose what you skipped.',
+      re:'When a poison change blocks apply, <b>bdr.alter_subscription_skip_changes_upto(sub, lsn)</b> tells a subscription to skip everything up to that LSN so replication resumes. It is a blunt last-resort tool that can drop data — verify and reconcile afterwards.',
+      nr:'When a poison change blocks apply, the function bdr dot alter subscription skip changes up to tells a subscription to skip everything up to a given L-S-N so replication can resume. It is a blunt last-resort tool that can drop data, so verify and reconcile afterwards.',
+      hb:'v6 runbook 21 — break replication, then skip past the bad LSN',
+      bv:[['bdr.subscription_error_status','disable_reason, current_retries and pending_changes when a subscription is stuck'],['bdr.stat_subscription','nskippedtx and retries_at_same_lsn show a stuck/skipping subscription']]},
+    {t:'Cluster Observability via Management Views', tag:'new', chap:'Operations & recovery', sc:s_clusterobservability, rv:['eng','sql','tbl','n'], fl:['a','b'],
+      an:'A dashboard shows how far behind each branch office is on its filing, so someone can step in before a branch falls dangerously behind.',
+      re:'PGD exposes cluster health through plain SQL views. Querying <code>bdr.node_slots_summary</code> for <code>node_name</code> and <code>replication_lag</code> shows exactly which peer is falling behind — a 14 second lag is a signal worth investigating before it becomes minutes.',
+      nr:'PGD exposes cluster health through plain SQL views. Querying bdr dot node slots summary for node name and replication lag shows exactly which peer is falling behind. A fourteen second lag is a signal worth investigating before it turns into minutes.',
+      bv:[['bdr.node_slots','replay_lag_bytes and replay_lag_size per peer — the basis for lag alerts'],['bdr.node_summary','overall node health alongside lag']]},
+  ]}
+);

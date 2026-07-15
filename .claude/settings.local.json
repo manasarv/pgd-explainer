@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check assets/scenes.js)",
+      "Bash(node --check sections/05_architecture.js)",
+      "Bash(node --check assets/story_whiteboard.js)",
+      "Bash(python3 -c ' *)",
+      "Bash(node /private/tmp/claude-503/-Users-manasa-vanteru-Downloads-pgd-explainer-with-PROJECT/9d4fb6e2-7a2e-4042-82b6-5cb786df082f/scratchpad/validate_story.js \"Architecture Overview: v4 → v6\")",
+      "Bash(node /private/tmp/claude-503/-Users-manasa-vanteru-Downloads-pgd-explainer-with-PROJECT/9d4fb6e2-7a2e-4042-82b6-5cb786df082f/scratchpad/validate_story.js)",
+      "Bash(node /tmp/final_check.js)",
+      "Bash(node /private/tmp/claude-503/-Users-manasa-vanteru-Downloads-pgd-explainer-with-PROJECT/9d4fb6e2-7a2e-4042-82b6-5cb786df082f/scratchpad/final_check.js)",
+      "Bash(open -a \"Google Chrome\" /Users/manasa.vanteru/Downloads/pgd_explainer_with_PROJECT/index.html)",
+      "Bash(open /Users/manasa.vanteru/Downloads/pgd_explainer_with_PROJECT/index.html)"
+    ]
+  }
+}
