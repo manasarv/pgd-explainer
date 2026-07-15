@@ -5,7 +5,7 @@
    ============================================================ */
 
 /* ---- FEEDBACK FORM LINK — EDIT THIS ONE LINE ---- */
-var FEEDBACK_URL = "PASTE_YOUR_GOOGLE_FORM_URL_HERE";
+var FEEDBACK_URL = "https://docs.google.com/spreadsheets/d/1jEMqQSSCBTton6lFHsV8hhwgpNuaF_fMGai-FypbGUI/edit?gid=0#gid=0";
 
 /* ---------- data ---------- */
 var GROUPS = window.PGD_GROUPS || [];
